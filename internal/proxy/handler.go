@@ -19,6 +19,7 @@ import (
 type EventHandler struct{}
 
 func (e *EventHandler) Connect(ctx *goproxy.Context, rw http.ResponseWriter) {
+	log.Println("Proxy: Connect");
 	// 保存的数据可以在后面的回调方法中获取
 	ctx.Data["req_id"] = "uuid"
 
@@ -35,6 +36,7 @@ func (e *EventHandler) Auth(ctx *goproxy.Context, rw http.ResponseWriter) {
 }
 
 func (e *EventHandler) BeforeRequest(ctx *goproxy.Context) {
+	log.Println("Proxy: BeforeRequest");
 	// 修改header
 	ctx.Req.Header.Add("X-Request-Id", ctx.Data["req_id"].(string))
 	// 设置X-Forwarded-For
@@ -57,7 +59,9 @@ func (e *EventHandler) BeforeRequest(ctx *goproxy.Context) {
 }
 
 func (e *EventHandler) BeforeResponse(ctx *goproxy.Context, resp *http.Response, err error) {
+	log.Println("Proxy: BeforeResponse");
 	if err != nil {
+		log.Println(err)
 		return
 	}
 	// 处理

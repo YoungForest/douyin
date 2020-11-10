@@ -1,4 +1,4 @@
 .idea/
 vendor/
-config.toml
 database.db
+*.DS_Store
